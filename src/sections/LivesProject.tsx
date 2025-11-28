@@ -1,11 +1,12 @@
 import Salesunbox from "@/assets/images/salesunbox.png";
 import SaleWeb from "@/assets/images/salesWeb.png";
-import RESQX from "@/assets/images/resqx.png";
-import HOODLIFE from "@/assets/images/hoodlife.png";
-import Fasion from "@/assets/images/fashion.png";
+import Radnon from "@/assets/images/radnon.png";
+import HARDE from "@/assets/images/hardevers.png";
+import Magent from "@/assets/images/magent.png";
+import Comtrova from "@/assets/images/comtrova.png";
 import Image from "next/image";
-import CheckCircleIcon from '@/assets/icons/check-circle.svg'
-import ArrowUpRightIcon from '@/assets/icons/arrow-up-right.svg'
+import CheckCircleIcon from "@/assets/icons/check-circle.svg";
+import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
 import SectionHeader from "@/components/SectionHeader";
 import Card from "@/components/Card";
 
@@ -15,9 +16,18 @@ const portfolioProjects = [
     year: "2024",
     title: "SalesUnbox Africa website",
     results: [
-      { title: "Contributed to the development of key pages (Home, About,Features Learn Training, Blog) on the SalesUnbox website" },
-      { title: " Integrated APIs for dynamic content display and enhanced the site's responsiveness and user experience" },
-      { title: "  Collaborated on improving layouts and implementing features to support SMEs" },
+      {
+        title:
+          "Owned and delivered the full frontend implementation of SalesUnbox’s main website (Home, About, Features, Learn, Training, Blog)",
+      },
+      {
+        title:
+          "Built and integrated APIs to enable dynamic content loading, resulting in faster page-load improvements and richer user experience",
+      },
+      {
+        title:
+          "Designed responsive, SME-centric layouts and features in close collaboration with stakeholders",
+      },
     ],
     link: "https://www.salesunbox.africa/",
     image: Salesunbox,
@@ -27,36 +37,121 @@ const portfolioProjects = [
     year: "2024",
     title: "SaleUnbox Web App",
     results: [
-      { title: "Worked on the authentication system for the SalesUnbox dashboard, ensuring secure user access." },
-      { title: "Integrated APIs to implement key features on the dashboard, improving functionality and user experience" },
-      { title: "Played a significant role in managing data flow and enhancing the overall efficiency of the platform." },
+      {
+        title:
+          "Designed and implemented a secure authentication system for the SalesUnbox dashboard using JWT and protected routes",
+      },
+      {
+        title:
+          "Led API integration for core dashboard features, enabling real-time data syncing, analytics, and user management",
+      },
+      {
+        title:
+          "Architected efficient state and data flow management (React Query + Redux), significantly improving performance and scalability",
+      },
     ],
     link: "https://www.app.salesunbox.africa/",
-    image: SaleWeb ,
+    image: SaleWeb,
   },
   {
     company: "LIVE Project",
-    year: "2024",
-    title: "RESQX",
+    year: "2025",
+    title: "Comtrova NG",
     results: [
-      { title: "Contributed to parts of the Home page, FAQs, and Blogs on the Resqx website." },
-      { title: "Implemented smooth animations using Framer Motion, enhancing user interaction and visual appeal" },
-      { title: "Played a key role in ensuring responsiveness and dynamic design elements across the site." },
+      {
+        title:
+          "Developed comprehensive user web application and admin dashboard using React, TypeScript, and modern frontend frameworks",
+      },
+      {
+        title:
+          "Implemented secure authentication, role-based access control, and complex state management for multi-user platform",
+      },
+      {
+        title:
+          "Integrated backend APIs for inventory management, order processing, and business analytics dashboards",
+      },
+      {
+        title:
+          "Optimized application performance for smooth user experience across various devices and network conditions",
+      },
     ],
-    link: "https://resqx.net/",
-    image: RESQX,
+    link: "https://comtrova.ng/",
+    image: Comtrova,
   },
   {
     company: "LIVE PROJECTS",
-    year: "2024",
-    title: "HOODHUB",
+    year: "2025",
+    title: "Radnon Media",
     results: [
-      { title: "Contributed to the development of the HoodHub landing page, focusing on user experience and visual appeal." },
-      { title: "Implemented animations to create a dynamic and engaging interface." },
-      { title: " Ensured the page was responsive and high-performing, aligning with the brand's vision." },
+      {
+        title:
+          "Built responsive web interfaces for media content management and distribution using React and Next.js.",
+      },
+      {
+        title:
+          "Implemented content organization systems, media galleries, and interactive user engagement features",
+      },
+      {
+        title:
+          "Collaborated with backend team to integrate CMS functionality and optimize content delivery.",
+      },
+      {
+        title:
+          "Ensured cross-browser compatibility and mobile responsiveness for optimal user accessibility",
+      },
     ],
-    link: "https://www.hoodhub.life/",
-    image: HOODLIFE,
+    link: "https://www.radnonmedia.com/",
+    image: Radnon,
+  },
+  {
+    company: "LIVE PROJECTS",
+    year: "2025",
+    title: "Harde Businees School",
+    results: [
+      {
+        title:
+          "Built responsive Hardeverse LMS interfaces with React, TypeScript and Chakra UI for 35,000+ learners; improved client-side performance leading to a 20% faster page load.",
+      },
+      {
+        title:
+          "Implemented RESTful API integrations for course management and real-time progress tracking, reducing backend response times by 20%",
+      },
+      {
+        title:
+          "Collaborated on gamification features that increased course completion and engagement; supported platform reliability with proactive debugging to maintain 99% uptime.",
+      },
+      {
+        title:
+          "Ensured cross-browser compatibility and mobile responsiveness for optimal user accessibility",
+      },
+    ],
+    link: "https://www.radnonmedia.com/",
+    image: HARDE,
+  },
+  {
+    company: "LIVE PROJECTS",
+    year: "2025",
+    title: "Magent",
+    results: [
+      {
+        title:
+          "Contributed to development of innovative AI-powered marketing assistant that transforms marketing data into actionable insights and personalized strategies",
+      },
+      {
+        title:
+          "Implemented responsive interfaces for marketing automation tools and Web3-native advertising features",
+      },
+      {
+        title:
+          "Collaborated with AI/ML team to integrate natural language processing capabilities for marketing content generation",
+      },
+      {
+        title:
+          "Ensured cross-browser compatibility and mobile responsiveness for optimal user accessibility",
+      },
+    ],
+    link: "https://magent-fe.vercel.app/",
+    image: Magent,
   },
 ];
 
@@ -76,7 +171,7 @@ export const LivesProject = () => {
               key={project.title}
               className="md:pt-12 md:px-10 lg:pt-16 lg:px-20 pb-0 px-8 pt-8 sticky"
               style={{
-                top: `calc(64px + ${projectIndex * 40}px`
+                top: `calc(64px + ${projectIndex * 40}px`,
               }}
             >
               <div className="lg:grid lg:grid-cols-2 lg:gap-16">
