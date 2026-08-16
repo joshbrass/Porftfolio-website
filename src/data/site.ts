@@ -12,7 +12,7 @@ import kabs from "../assets/images/kabsdinner.png";
 import comtrova from "../assets/images/works/mello.png";
 import harde from "../assets/images/works/hardeverse.png";
 import radcare from "../assets/images/works/radcare.png";
-import { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 
 export const person = {
   name: "Omeonu Joshua",
@@ -23,9 +23,9 @@ export const person = {
   timezone: "WAT — UTC+1",
   since: "2022", // ⚠ VERIFY: year you started writing code professionally
   email: "joshuaomeonu@gmail.com",
-  cv: "https://drive.google.com/file/d/1mS01RURaMe8c8NwX4opBoVjWCsUMEX2d/view",
+  cv: "https://drive.google.com/file/d/1bCq-bY2AA3piE_1zuXitvCwRc_1r14gd/view?usp=sharing",
   portrait: {
-    src: img, // ← put your photo at public/me.jpg
+    src: img,
     alt: "Joshua Omeonu",
     caption: "Ikeja, Lagos", // ⚠ EDIT: where it was taken
     year: "2026",
@@ -135,6 +135,8 @@ export const chapters = [
     Cutting for a specific application? Drop the one furthest from
     that employer's domain, not the one you enjoyed least.        */
 
+export type ProgressState = "Complete" | "In progress" | "Planned";
+
 export type Project = {
   name: string;
   kind: string;
@@ -146,7 +148,13 @@ export type Project = {
   href?: string;
   /** Shown as a badge when there's no public URL, e.g. "Internal system". */
   status?: string;
-
+  /**
+   * Build checklist for unfinished work, rendered as a status list.
+   * Including a "Planned" row is the point — it's what makes the
+   * "Complete" rows believable.
+   */
+  progress?: { item: string; state: ProgressState }[];
+  /** Screenshot — a static import or a path under /public. Optional. */
   image?: string | StaticImageData;
 };
 
@@ -289,6 +297,37 @@ export const featured: Project[] = [
     href: "https://hardeverse.org/",
     image: harde,
   },
+  {
+    name: "NMU Alumni API",
+    kind: "REST API",
+    year: "2026",
+    role: "Backend · sole engineer",
+    status: "In progress",
+    summary:
+      "A REST API for my university's alumni network, and the first backend I'm writing by hand rather than consuming. Authentication, the role model and validation are being built rather than configured — that's the layer every other project on this page let somebody else own.",
+    contributions: [
+      "Modelling alumni, profile and connection data as Mongoose schemas with validation defined at the model, rather than trusting whatever arrives in the request body.",
+      "Writing JWT issuance and refresh with bcrypt password hashing directly, so the auth flow I've consumed a dozen times is one I've also implemented.",
+      "Building role middleware that separates alumni from administrator, and validation middleware that rejects malformed input before it reaches a controller.",
+      "Keeping error shapes consistent across every endpoint — inconsistent error responses are the thing I've most often had to work around as a client.",
+    ],
+    progress: [
+      { item: "Project structure and MVC layout", state: "Complete" },
+      { item: "MongoDB connection and data layer", state: "Complete" },
+      { item: "JWT auth endpoints", state: "In progress" },
+      { item: "Profile CRUD with ownership checks", state: "In progress" },
+      { item: "Deployed with a public base URL", state: "Planned" },
+    ],
+    stack: [
+      "Node.js",
+      "Express 5",
+      "TypeScript",
+      "MongoDB",
+      "Mongoose",
+      "JWT",
+      "bcrypt",
+    ],
+  },
 ];
 
 /* Everything else — a quiet index, not six more big cards. */
@@ -330,15 +369,11 @@ export const alsoBuilt = [
 ];
 
 /* ── Held back on purpose ─────────────────────────────────────
-   Not listed, and shouldn't be until they're real:
+   Not listed, and shouldn't be until it's real:
 
    · SalesUnbox Admin Dashboard — mock data, no API, no auth.
      A prototype beside five live products invites the one
      question you can't answer. Wire it up and it's a strong entry.
-
-   · NMU Alumni API — Node/Express/Mongo, Phase 1. Dependencies
-     installed isn't a project. Ship auth + profile endpoints and
-     it becomes real backend proof.
 
    Before publishing the Nutrition International entry, clear it
    with your lead. It's client-internal software.
@@ -364,6 +399,13 @@ export const direction = [
     body: "Most of what I've built replaces a spreadsheet and a WhatsApp thread — approval routing at Nutrition International, card reconciliation against internal records, multi-format export at Harde, payment verification in a Supabase edge function. It's the part of the job I like most, because the before-and-after is measured in someone's afternoon.",
     standing:
       "Extending into scheduled jobs, webhook-driven reconciliation and background processing rather than user-triggered actions.",
+  },
+  {
+    status: "Building now",
+    title: "Owning the server, not just the schema",
+    body: "Every production system on this page is me consuming an API someone else designed. Kabs Diner got me closer — I modelled that Postgres schema and moved payment verification into an edge function — but Supabase handles the parts I most want to understand. So I'm writing one properly: an Express and MongoDB API for my university's alumni network, with the auth, role model and validation layer built by hand rather than configured.",
+    standing:
+      "Structure and database layer are in place; auth and profile endpoints are what I'm writing now. It goes in the work section above once it serves requests, not before.",
   },
   {
     status: "Early",
@@ -403,14 +445,7 @@ export const principles = [
 export const toolkit = [
   {
     group: "Every day",
-    items: [
-      "React",
-      "TypeScript",
-      "Next.js",
-      "Tailwind CSS",
-      "REST APIs",
-      "Git",
-    ],
+    items: ["React", "TypeScript", "Next.js", "Tailwind CSS", "REST APIs", "Git"],
   },
   {
     group: "Regularly",

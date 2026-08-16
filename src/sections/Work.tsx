@@ -21,6 +21,27 @@ function Arrow({ className = "" }: { className?: string }) {
   );
 }
 
+/** Anchor when there's a link, plain row when there isn't — an <a> with
+ *  no href is focusable-but-dead and reads as broken to a screen reader. */
+function IndexRow({
+  href,
+  children,
+}: {
+  href?: string;
+  children: React.ReactNode;
+}) {
+  const shared =
+    "group flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-[#151A22] py-4 transition-colors hover:border-[#2A3341]";
+
+  if (!href) return <div className={shared}>{children}</div>;
+
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={shared}>
+      {children}
+    </a>
+  );
+}
+
 function Entry({ project, index }: { project: Project; index: number }) {
   const num = String(index + 1).padStart(2, "0");
 
@@ -81,6 +102,37 @@ function Entry({ project, index }: { project: Project; index: number }) {
         ))}
       </ul>
 
+      {project.progress && (
+        <div className="mt-8 max-w-md border-t border-[#1C222C] pt-6">
+          <p className="u-mono mb-4 text-[10px] uppercase tracking-[0.2em] text-[#4E5B6B]">
+            Build status
+          </p>
+          <ul className="space-y-2.5">
+            {project.progress.map((row) => (
+              <li
+                key={row.item}
+                className="flex items-baseline justify-between gap-4"
+              >
+                <span className="text-[14px] leading-snug text-[#C7CED8]">
+                  {row.item}
+                </span>
+                <span
+                  className={`u-mono shrink-0 text-[10px] uppercase tracking-[0.14em] ${
+                    row.state === "Complete"
+                      ? "text-[#7FA8C9]"
+                      : row.state === "In progress"
+                        ? "text-[#8B95A5]"
+                        : "text-[#4E5B6B]"
+                  }`}
+                >
+                  {row.state}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <ul className="u-mono mt-8 flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-[#4E5B6B]">
         {project.stack.map((tech) => (
           <li key={tech}>{tech}</li>
@@ -93,17 +145,21 @@ function Entry({ project, index }: { project: Project; index: number }) {
           target={project.href ? "_blank" : undefined}
           rel={project.href ? "noopener noreferrer" : undefined}
           aria-label={project.href ? `Open ${project.name}` : undefined}
-          className="mt-10 block overflow-hidden rounded-sm border border-[#1C222C] transition-colors group-hover:border-[#2A3341]"
+          className="mt-10 block overflow-hidden rounded-sm border border-[#1C222C] bg-[#10141B] p-2 transition-colors group-hover:border-[#2A3341] sm:p-3"
         >
-          <div className="relative h-[380px] w-full bg-[#10141B]">
-            <Image
-              src={project.image}
-              alt={`${project.name} interface`}
-              fill
-              sizes="(max-width: 768px) 100vw, 800px"
-              className="object-contain object-center opacity-70 saturate-[0.75] transition-all duration-500 group-hover:opacity-100 group-hover:saturate-100"
-            />
-          </div>
+          {/* No fixed aspect ratio and no object-cover: the screenshot
+              renders at its own proportions, so nothing is cropped.
+              Static imports carry their own width/height, which also
+              means no layout shift on load. */}
+          <Image
+            src={project.image}
+            alt={`${project.name} interface`}
+            sizes="(max-width: 768px) 100vw, 800px"
+            {...(typeof project.image === "string"
+              ? { width: 1600, height: 1000 }
+              : { placeholder: "blur" as const })}
+            className="h-auto w-full rounded-[2px] opacity-80 saturate-[0.75] transition-all duration-500 group-hover:opacity-100 group-hover:saturate-100"
+          />
         </a>
       )}
     </Reveal>
@@ -117,7 +173,7 @@ export default function Work() {
       index="02"
       label="Work"
       title="Selected work"
-      lede="Five projects I can talk about for an hour. Different domains, but a recurring problem: several front-ends, one API, and a permission model that decides what a person is even allowed to see."
+      lede="Work I can talk about for an hour. Different domains, but a recurring problem each time: several front-ends, one API, and a permission model deciding what each person is allowed to see. The last entry isn't finished — its build status is listed with it."
     >
       <div>
         {featured.map((project, i) => (
@@ -132,12 +188,7 @@ export default function Work() {
         <ul>
           {alsoBuilt.map((item) => (
             <li key={item.name}>
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-[#151A22] py-4 transition-colors hover:border-[#2A3341]"
-              >
+              <IndexRow href={item.href}>
                 <span className="text-[15px] text-[#C7CED8] transition-colors group-hover:text-[#7FA8C9]">
                   {item.name}
                 </span>
@@ -150,8 +201,10 @@ export default function Work() {
                 <span className="u-mono w-12 text-right text-[11px] text-[#4E5B6B]">
                   {item.year}
                 </span>
-                <Arrow className="text-[#2A3341] transition-colors group-hover:text-[#7FA8C9]" />
-              </a>
+                {item.href && (
+                  <Arrow className="text-[#2A3341] transition-colors group-hover:text-[#7FA8C9]" />
+                )}
+              </IndexRow>
             </li>
           ))}
         </ul>
