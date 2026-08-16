@@ -1,94 +1,116 @@
-"use client";
-import memojiImage from '@/assets/images/momoji.png'
-import ArrowDown from '@/assets/icons/arrow-down.svg'
-import Image from 'next/image';
-import grainImage from '@/assets/images/grain.jpg'
-import StarIcon from '@/assets/icons/star.svg'
-import SparkleIcon from '@/assets/icons/sparkle.svg'
-import HeroOrbit from '@/components/HeroOrbit';
-import CVButton from '@/components/CvButton';
+import { hero, person } from "@/data/site";
 
-export const HeroSection = () => {
+/**
+ * Signature element: the title block.
+ * Every engineering drawing carries one in the bottom-right corner —
+ * name, part, scale, revision, date. Josh has a mechanical engineering
+ * degree, so the page opens with his. It does the job a stats-and-gradient
+ * hero normally does, but it says something true about him instead.
+ */
+function TitleBlock() {
+  const rows: [string, React.ReactNode][] = [
+    ["Name", person.name],
+    ["Role", person.role],
+    ["Base", `${person.base} · ${person.timezone}`],
+    ["Shipping since", person.since],
+    [
+      "Status",
+      <span key="s" className="inline-flex items-center gap-2">
+        <span
+          className={`inline-block h-[6px] w-[6px] shrink-0 rounded-full ${
+            person.availability.open ? "bg-[#7FA8C9]" : "bg-[#4E5B6B]"
+          }`}
+        />
+        <span className="leading-snug">{person.availability.label}</span>
+      </span>,
+    ],
+  ];
+
   return (
-    <div className='py-32 md:py-48 lg:py-60 relative z-0 overflow-x-clip' id='hero'>
-      <div className='absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_70%,transparent)]'>
-        <div className='absolute inset-0 -z-30 opacity-5' style={{
-          backgroundImage: `url(${grainImage.src})`
-        }}></div>
-        <div className='size-[620px] hero-ring'></div>
-        <div className='size-[820px] hero-ring'></div>
-        <div className='size-[1020px] hero-ring'></div>
-        <div className='size-[1220px] hero-ring'></div>
-        <HeroOrbit size={430} rotation={-14} shouldOrbit orbitDuration='30s' shouldSpin spinDuration='3s'>
-          <SparkleIcon className='size-8 text-emerald-300/20'/>
-        </HeroOrbit>
-        <HeroOrbit size={440} rotation={79} shouldOrbit orbitDuration='32s' shouldSpin spinDuration='3s'>
-          <SparkleIcon className='size-5 text-emerald-300/20'/>
-        </HeroOrbit>
-        <HeroOrbit size={520} rotation={-41} shouldOrbit orbitDuration='34s'>
-          <div className='size-2 rounded-full bg-emerald-300'/>
-        </HeroOrbit>
-        <HeroOrbit size={530} rotation={178} shouldOrbit orbitDuration='36s' shouldSpin spinDuration='3s'>
-          <SparkleIcon className='size-10 text-emerald-300/20'/>
-        </HeroOrbit>
-        <HeroOrbit size={550} rotation={20} shouldOrbit orbitDuration='38s' shouldSpin spinDuration='6s'>
-          <StarIcon className='size-12 text-emerald-300'/>
-        </HeroOrbit>
-        <HeroOrbit size={590} rotation={98} shouldOrbit orbitDuration='40s' shouldSpin spinDuration='6s'>
-          <StarIcon className='size-8 text-emerald-300'/>
-        </HeroOrbit>
-        <HeroOrbit size={650} rotation={-5} shouldOrbit orbitDuration='42s'>
-          <div className='size-2 rounded-full bg-emerald-300'/>
-        </HeroOrbit>
-        <HeroOrbit size={710} rotation={144} shouldOrbit orbitDuration='44s' shouldSpin spinDuration='3s'>
-          <SparkleIcon className='size-14 text-emerald-300/20' />
-        </HeroOrbit>
-        <HeroOrbit size={720} rotation={85} shouldOrbit orbitDuration='46s'>
-          <div className='size-3 rounded-full bg-emerald-300'/>
-        </HeroOrbit>
-        <HeroOrbit size={800} rotation={-72} shouldOrbit orbitDuration='48s' shouldSpin spinDuration='6s'>
-            <StarIcon className='size-28 text-emerald-300'/>
-        </HeroOrbit>
-        
-        
-       </div>
-      <div className='container'>
-        <div className='flex flex-col items-center'>
-          <Image src={memojiImage} width={100} height={100} alt='my emoji' />
-          <div className='bg-gray-950 border border-gray-800 px-4 py-1.5 inline-flex items-center gap-4 rounded-lg'>
-            <div className='bg-green-500 w-2.5 h-2.5 rounded-full relative'>
-              <div className='bg-green-500 absolute inset-0 animate-ping-large rounded-full'></div>
-            </div>
-            <div className='text-sm font-medium'>Available for new projects</div>
-          </div>
+    <dl className="u-mono w-full max-w-md border border-[#1C222C] text-[11px] leading-none">
+      {rows.map(([label, value], i) => (
+        <div
+          key={label}
+          className={`flex items-start gap-3 px-3.5 py-3 sm:items-center sm:gap-4 sm:px-4 ${
+            i === 0 ? "" : "border-t border-[#1C222C]"
+          }`}
+        >
+          <dt className="w-[5.75rem] shrink-0 uppercase tracking-[0.14em] text-[#4E5B6B] sm:w-[6.5rem]">
+            {label}
+          </dt>
+          <dd className="min-w-0 text-[#C7CED8]">{value}</dd>
         </div>
-        <div className='max-w-lg mx-auto'>
-          <h1 className='font-serif text-3xl text-center md:text-5xl mt-8 tracking-wide'>
-          Fostering Immersive User Experiences
-          </h1>
-          <p className='mt-4 text-center text-white/60 md:text-lg'>
-            Hi, I&apos;m Omeonu A. Joshua, a front-end engineer passionate about creating responsive, 
-            user-friendly web applications. Explore my projects and see how I bring designs to life with clean, efficient code.
-          </p>
-        </div>
-        <div className='flex flex-col md:flex-row justify-center items-center mt-8 gap-4'>
-        
-          <a
-            href="https://drive.google.com/your-google-drive-file-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 border border-white/15 px-6 h-12 rounded-xl cursor-pointer"
-          >
-            <span className="font-semibold">Explore My Works</span>
-            <ArrowDown className="w-4 h-4" />
-          </a>
+      ))}
+    </dl>
+  );
+}
 
-          <button className='inline-flex items-center gap-2 border border-white bg-white text-gray-900 h-12 px-6 rounded-xl'>
-            <span>👋</span>
-            <span className='font-semibold'>Let&apos;s Connect</span>
-          </button>
+export default function Hero() {
+  return (
+    <section
+      id="top"
+      className="relative flex min-h-[100svh] flex-col justify-center px-5 pb-16 pt-28 sm:px-8 sm:pb-12 sm:pt-32"
+    >
+      <div className="mx-auto w-full max-w-5xl">
+        <p
+          className="u-mono rise mb-6 text-[10px] uppercase tracking-[0.24em] text-[#7FA8C9] sm:mb-8 sm:text-[11px]"
+          style={{ animationDelay: "80ms" }}
+        >
+          {person.name} — {person.base}
+        </p>
+
+        <h1 className="u-display text-[clamp(2.25rem,8.5vw,5.5rem)] font-light leading-[1.05] tracking-[-0.028em] text-[#E9ECF1] sm:leading-[1.02]">
+          {hero.headline.map((line, i) => (
+            <span
+              key={line}
+              className="rise block"
+              style={{ animationDelay: `${180 + i * 110}ms` }}
+            >
+              {line}
+            </span>
+          ))}
+        </h1>
+
+        <div
+          className="rise mt-8 grid gap-8 sm:mt-10 sm:gap-10 md:grid-cols-[1fr_auto] md:items-end"
+          style={{ animationDelay: "580ms" }}
+        >
+          <div className="max-w-xl">
+            <p className="text-[14.5px] leading-relaxed text-[#8B95A5] sm:text-[15px] sm:leading-relaxed md:text-base">
+              {hero.intro}
+            </p>
+            <p className="u-mono mt-4 text-[11.5px] leading-relaxed text-[#7FA8C9] sm:mt-5 sm:text-[12px]">
+              {hero.now}
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-2.5 sm:mt-9 sm:gap-3">
+              <a
+                href={`mailto:${person.email}`}
+                className="u-mono rounded-sm bg-[#F5F2EC] px-3.5 py-2.5 text-[11.5px] tracking-[0.06em] text-[#0B0E13] transition-opacity hover:opacity-85 sm:px-4 sm:text-[12px]"
+              >
+                Start a conversation
+              </a>
+              <a
+                href="#work"
+                className="u-mono rounded-sm border border-[#2A3341] px-3.5 py-2.5 text-[11.5px] tracking-[0.06em] text-[#C7CED8] transition-colors hover:border-[#7FA8C9] hover:text-[#7FA8C9] sm:px-4 sm:text-[12px]"
+              >
+                See the work
+              </a>
+            </div>
+          </div>
+
+          <TitleBlock />
         </div>
       </div>
-    </div>
+
+      <div
+        className="rise pointer-events-none absolute inset-x-0 bottom-5 mx-auto max-w-5xl px-5 sm:bottom-6 sm:px-8"
+        style={{ animationDelay: "900ms" }}
+      >
+        <span className="u-mono text-[10px] uppercase tracking-[0.28em] text-[#3A4552]">
+          Scroll
+        </span>
+      </div>
+    </section>
   );
-};
+}

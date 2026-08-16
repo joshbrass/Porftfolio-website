@@ -2,18 +2,201 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — "blueprint ink"
+
+   ink        base surface
+   panel      raised surface (image wells, empty states)
+   rule       hairlines, borders
+   chalk      primary text
+   graphite   secondary text
+   blueprint  annotations, links, drafting marks
+   ivory      inverted CTA only — spend this sparingly
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --ink: #0b0e13;
+  --panel: #10141b;
+  --rule: #1c222c;
+  --rule-soft: #151a22;
+  --chalk: #e9ecf1;
+  --chalk-dim: #c7ced8;
+  --graphite: #8b95a5;
+  --graphite-dim: #4e5b6b;
+  --blueprint: #7fa8c9;
+  --ivory: #f5f2ec;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE — element selectors only. No reusable class lives here.
+   ═══════════════════════════════════════════════════════════ */
+
 @layer base {
-  .nav-item {
-    @apply px-4 py-1.5 rounded-full text-white/70 text-sm font-semibold hover:bg-white/10 hover:text-white transition duration-300;
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
-  .hero-ring {
-    @apply absolute inset-0 border-2 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-emerald-300/5 shadow-[0_0_80px_inset] shadow-emerald-300/5;
+  body {
+    background-color: var(--ink);
+    color: var(--chalk);
+    font-family: var(--font-plex-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Serif display face never needs synthetic weight — it has real cuts. */
+  h1,
+  h2,
+  h3 {
+    font-synthesis-weight: none;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--blueprint);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--blueprint);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) var(--ink);
+  }
+
+  /* WebKit */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--rule);
+    border: 3px solid var(--ink);
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--graphite-dim);
   }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTS — reusable class abstractions.
+   Written as plain CSS rather than @apply, so declaration order
+   is exactly what's written here and Tailwind's internal plugin
+   order can't reshuffle it.
+   ═══════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Scroll-reveal primitive. Toggled by components/Reveal.tsx. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 700ms var(--ease-out);
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Hero load sequence. Delay is set inline per line. */
+  .rise {
+    opacity: 0;
+    animation: rise 900ms var(--ease-out) forwards;
+  }
+
+  /* Underline that draws in from the left. */
+  .draw-link {
+    background-image: linear-gradient(var(--blueprint), var(--blueprint));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 350ms var(--ease-out);
+  }
+  .draw-link:hover,
+  .draw-link:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Serif-italic aside inside sans body copy — the one typographic
+     flourish, reserved for lines worth slowing down on. Used by the
+     <em> tags in data/site.ts story chapters. */
+  .prose-note em {
+    font-family: var(--font-newsreader), Georgia, serif;
+    font-style: italic;
+    font-size: 1.07em;
+    color: var(--chalk);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   UTILITIES — single-purpose, override-safe.
+   ═══════════════════════════════════════════════════════════ */
+
 @layer utilities {
-  .container {
-    @apply lg:max-w-5xl;
+  .u-display {
+    font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  .u-mono {
+    font-family: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+    font-feature-settings: "zero" 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOTION
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .rise,
+  .draw-link {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

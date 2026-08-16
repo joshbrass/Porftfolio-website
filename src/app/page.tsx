@@ -1,29 +1,35 @@
 
-import Approach from "@/sections/Approach";
-import Foter from "@/sections/Foter";
-import Grid from "@/sections/Grid";
-import { Header } from "@/sections/Header";
-import { HeroSection } from "@/sections/Hero";
-import { LivesProject } from "@/sections/LivesProject";
-import { ProjectsSection } from "@/sections/Projects";
-import { TapeSection } from "@/sections/Tape";
-import { TestimonialsSection } from "@/sections/Testimonials";
+import Hero from "@/sections/Hero";
+import Story from "@/sections/Story";
+import Work from "@/sections/Work";
+import Craft from "@/sections/Craft";
+import Direction from "@/sections/Direction";
+import Voices from "@/sections/Voices";
+import Contact from "@/sections/Contact";
+import Nav from "@/components/Nav";
 
+/**
+ * The page reads as one continuous argument:
+ *   who I am → how I got here → what I've shipped →
+ *   how I think → who vouches for me → how to reach me.
+ *
+ * Deliberately removed: TapeSection (buzzword marquee, ×3),
+ * Grid/BentoGrid (recognisable template), Approach (Aceternity
+ * canvas cards), ProjectsSection (superseded by Work).
+ */
 export default function Home() {
   return (
-    <div>
-      <Header/>
-      <HeroSection/>
-      {/* <ProjectsSection/> */}
-      <TapeSection/>
-      <LivesProject/>
-      <Grid/>
-      <TapeSection/>
-      <Approach/>
-      <TapeSection/>
-      <TestimonialsSection/>
-      <Foter/>
-      
-    </div>
+    <>
+      <Nav />
+      <main id="main">
+        <Hero />
+        <Story />
+        <Work />
+        <Craft />
+        <Direction />
+        <Voices />
+        <Contact />
+      </main>
+    </>
   );
 }
