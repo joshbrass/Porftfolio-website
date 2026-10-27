@@ -1,11 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { nav, person } from "@/data/site";
+import { gsap, useGSAP, MOTION_OK } from "@/lib/gsap";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const progress = useRef<HTMLSpanElement>(null);
+
+  // Reading-progress hairline along the bottom edge of the bar.
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      gsap.fromTo(
+        progress.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: "none",
+          scrollTrigger: { start: 0, end: "max", scrub: 0.3 },
+        }
+      );
+    });
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -57,6 +75,11 @@ export default function Nav() {
           : "border-b border-transparent bg-[#0B0E13]/80 backdrop-blur-sm"
       }`}
     >
+      <span
+        ref={progress}
+        aria-hidden
+        className="absolute -bottom-px left-0 h-px w-full origin-left scale-x-0 bg-[#7FA8C9] motion-reduce:hidden"
+      />
       <div className="mx-auto flex h-[68px] w-full max-w-5xl items-center justify-between px-4 sm:px-6 md:px-8">
         {/* Logo / Identity */}
         <a

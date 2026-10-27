@@ -3,6 +3,9 @@ import Reveal from "@/components/Reveal";
 import { featured, alsoBuilt } from "@/data/site";
 import type { Project } from "@/data/site";
 import Section from "./Section";
+import SplitHeading from "@/components/motion/SplitHeading";
+import ImageReveal from "@/components/motion/ImageReveal";
+import ShippedIndex from "@/components/ShippedIndex";
 
 function Arrow({ className = "" }: { className?: string }) {
   return (
@@ -18,27 +21,6 @@ function Arrow({ className = "" }: { className?: string }) {
     >
       <path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" />
     </svg>
-  );
-}
-
-/** Anchor when there's a link, plain row when there isn't — an <a> with
- *  no href is focusable-but-dead and reads as broken to a screen reader. */
-function IndexRow({
-  href,
-  children,
-}: {
-  href?: string;
-  children: React.ReactNode;
-}) {
-  const shared =
-    "group flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-[#151A22] py-4 transition-colors hover:border-[#2A3341]";
-
-  if (!href) return <div className={shared}>{children}</div>;
-
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={shared}>
-      {children}
-    </a>
   );
 }
 
@@ -64,15 +46,21 @@ function Entry({ project, index }: { project: Project; index: number }) {
           rel="noopener noreferrer"
           className="inline-flex items-baseline gap-2.5"
         >
-          <h3 className="u-display text-[2rem] font-normal leading-none tracking-[-0.02em] text-[#E9ECF1] transition-colors group-hover:text-[#7FA8C9] sm:text-[2.4rem]">
+          <SplitHeading
+            as="h3"
+            className="u-display text-[2rem] font-normal leading-none tracking-[-0.02em] text-[#E9ECF1] transition-colors group-hover:text-[#7FA8C9] sm:text-[2.4rem]"
+          >
             {project.name}
-          </h3>
+          </SplitHeading>
           <Arrow className="text-[#4E5B6B] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:text-[#7FA8C9]" />
         </a>
       ) : (
-        <h3 className="u-display text-[2rem] font-normal leading-none tracking-[-0.02em] text-[#E9ECF1] sm:text-[2.4rem]">
+        <SplitHeading
+          as="h3"
+          className="u-display text-[2rem] font-normal leading-none tracking-[-0.02em] text-[#E9ECF1] sm:text-[2.4rem]"
+        >
           {project.name}
-        </h3>
+        </SplitHeading>
       )}
 
       <p className="u-mono mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.14em] text-[#4E5B6B]">
@@ -145,12 +133,14 @@ function Entry({ project, index }: { project: Project; index: number }) {
           target={project.href ? "_blank" : undefined}
           rel={project.href ? "noopener noreferrer" : undefined}
           aria-label={project.href ? `Open ${project.name}` : undefined}
+          data-cursor={project.href ? "View" : undefined}
           className="mt-10 block overflow-hidden rounded-sm border border-[#1C222C] bg-[#10141B] p-2 transition-colors group-hover:border-[#2A3341] sm:p-3"
         >
           {/* No fixed aspect ratio and no object-cover: the screenshot
               renders at its own proportions, so nothing is cropped.
               Static imports carry their own width/height, which also
               means no layout shift on load. */}
+          <ImageReveal>
           <Image
             src={project.image}
             alt={`${project.name} interface`}
@@ -158,8 +148,9 @@ function Entry({ project, index }: { project: Project; index: number }) {
             {...(typeof project.image === "string"
               ? { width: 1600, height: 1000 }
               : { placeholder: "blur" as const })}
-            className="h-auto w-full rounded-[2px] opacity-80 saturate-[0.75] transition-all duration-500 group-hover:opacity-100 group-hover:saturate-100"
+            className="h-auto w-full rounded-[2px] opacity-80 saturate-[0.75] transition-[opacity,filter] duration-500 group-hover:opacity-100 group-hover:saturate-100"
           />
+          </ImageReveal>
         </a>
       )}
     </Reveal>
@@ -185,29 +176,7 @@ export default function Work() {
         <h3 className="u-mono mb-6 text-[11px] uppercase tracking-[0.2em] text-[#4E5B6B]">
           Also shipped
         </h3>
-        <ul>
-          {alsoBuilt.map((item) => (
-            <li key={item.name}>
-              <IndexRow href={item.href}>
-                <span className="text-[15px] text-[#C7CED8] transition-colors group-hover:text-[#7FA8C9]">
-                  {item.name}
-                </span>
-                <span className="u-mono text-[11px] text-[#4E5B6B]">
-                  {item.kind}
-                </span>
-                <span className="u-mono ml-auto hidden text-[11px] text-[#3A4552] sm:block">
-                  {item.stack}
-                </span>
-                <span className="u-mono w-12 text-right text-[11px] text-[#4E5B6B]">
-                  {item.year}
-                </span>
-                {item.href && (
-                  <Arrow className="text-[#2A3341] transition-colors group-hover:text-[#7FA8C9]" />
-                )}
-              </IndexRow>
-            </li>
-          ))}
-        </ul>
+        <ShippedIndex items={alsoBuilt} />
       </Reveal>
     </Section>
   );

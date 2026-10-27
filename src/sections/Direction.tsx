@@ -12,7 +12,7 @@ export default function Direction() {
   return (
     <Section
       id="direction"
-      index="04"
+      index="05"
       label="Next"
       title="Where I'm heading"
       lede="Three things I'm pointed at, and an honest account of how far along each one is."

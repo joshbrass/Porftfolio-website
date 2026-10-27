@@ -35,6 +35,8 @@
 
 @layer base {
   html {
+    /* Lenis smooths the scroll; this is the fallback when it's off
+       (reduced motion), overridden by .lenis-smooth when it's on. */
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
@@ -122,6 +124,72 @@
     animation: rise 900ms var(--ease-out) forwards;
   }
 
+  /* Hidden until a GSAP entrance reveals it with autoAlpha. Shown
+     outright for reduced motion (below) and no-JS (layout <noscript>). */
+  .gsap-hide {
+    visibility: hidden;
+  }
+
+  /* Hero drafting sheet: minor grid every 48px, major every 240px,
+     fading out toward the edges so it reads as paper, not pattern. */
+  .hero-grid {
+    inset: -24px;
+    background-image:
+      linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px),
+      linear-gradient(var(--rule-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule-soft) 1px, transparent 1px);
+    background-size: 240px 240px, 240px 240px, 48px 48px, 48px 48px;
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 20%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, #000 20%, transparent 78%);
+  }
+
+  /* Scroll is locked while the preloader covers the page. */
+  html.is-preloading,
+  html.is-preloading body {
+    overflow: hidden;
+  }
+
+  /* Story rail nodes, lit as the reading marker passes them. */
+  .rail-node.is-lit {
+    border-color: var(--blueprint);
+    background-color: var(--blueprint);
+    box-shadow: 0 0 0 4px rgb(127 168 201 / 0.12);
+  }
+
+  /* AI workflow nodes, lit in sequence by sections/AiWork.tsx. */
+  .ai-node.is-lit {
+    border-color: var(--blueprint);
+    color: var(--chalk);
+    box-shadow: 0 0 0 5px rgb(127 168 201 / 0.08);
+  }
+
+  /* Availability dot pulse. */
+  .hero-ping {
+    animation: ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Outlined half of the sign-off marquee. */
+  .signoff-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--graphite-dim);
+    transition: -webkit-text-stroke-color 400ms var(--ease-out);
+  }
+  a:hover .signoff-outline {
+    -webkit-text-stroke-color: var(--blueprint);
+  }
+
+  /* Film grain over everything — texture, not decoration. */
+  .grain {
+    position: fixed;
+    inset: -100%;
+    z-index: 90;
+    pointer-events: none;
+    background-image: url("../assets/images/grain.jpg");
+    opacity: 0.045;
+    animation: grain 1.2s steps(6) infinite;
+  }
+
   /* Underline that draws in from the left. */
   .draw-link {
     background-image: linear-gradient(var(--blueprint), var(--blueprint));
@@ -177,9 +245,34 @@
   }
 }
 
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-6%, 4%); }
+  40% { transform: translate(4%, -8%); }
+  60% { transform: translate(-8%, -2%); }
+  80% { transform: translate(6%, 6%); }
+  100% { transform: translate(0, 0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .gsap-hide {
+    visibility: visible !important;
+  }
+
+  .grain {
+    animation: none;
   }
 
   .reveal,

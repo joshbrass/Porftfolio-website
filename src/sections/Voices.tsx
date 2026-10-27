@@ -7,7 +7,7 @@ export default function Voices() {
   return (
     <Section
       id="references"
-      index="04"
+      index="06"
       label="References"
       title="People I've built with"
     >

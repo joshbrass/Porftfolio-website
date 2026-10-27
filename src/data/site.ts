@@ -12,6 +12,10 @@ import kabs from "../assets/images/kabsdinner.png";
 import comtrova from "../assets/images/works/mello.png";
 import harde from "../assets/images/works/hardeverse.png";
 import radcare from "../assets/images/works/radcare.png";
+import salesunboxApp from "../assets/images/salesunbox-web.png";
+import salesunboxSite from "../assets/images/salesunbox.png";
+import magent from "../assets/images/magent.png";
+import radnon from "../assets/images/radnon.png";
 import type { StaticImageData } from "next/image";
 
 export const person = {
@@ -51,7 +55,25 @@ export const hero = {
   headline: ["I build the software", "that businesses", "actually run on."],
   intro:
     "I'm a full-stack engineer in Lagos. For the last three years I've been shipping production systems — retail distribution, property management, learning platforms — for teams who notice within minutes when something breaks.",
+  // Shown as chips under the intro. Five max — it's a signal, not a CV.
+  stack: ["React", "TypeScript", "Next.js", "Node.js", "PostgreSQL"],
   now: "Currently at TechMinte, building Comtrova — and on the Hardeverse learning platform at Harde Business School.",
+};
+
+/* ── Statement: the scroll-driven line under the hero ─────── */
+/*  The lead lines rise in as you scroll, then the highlighted
+    phrase swaps once per audience, with the project that proves
+    it named underneath. Keep phrases short — they're set huge.  */
+
+export const statement = {
+  lead: ["I build products", "that solve real", "problems for"],
+  audiences: [
+    { phrase: "retail merchants.", project: "SalesUnbox" },
+    { phrase: "estate managers.", project: "Comtrova" },
+    { phrase: "patients & carers.", project: "RadCare" },
+    { phrase: "eager learners.", project: "Hardeverse" },
+    { phrase: "a busy kitchen.", project: "Kabs Diner" },
+  ],
 };
 
 /* ── Story: chapters, in order ────────────────────────────── */
@@ -338,6 +360,7 @@ export const alsoBuilt = [
     year: "2023—24",
     stack: "React · Next.js · Paystack",
     href: "https://www.app.salesunbox.africa/",
+    image: salesunboxApp,
   },
   {
     name: "Unbox",
@@ -345,6 +368,7 @@ export const alsoBuilt = [
     year: "2025",
     stack: "React 19 · Vite · Redux Toolkit",
     href: "https://www.salesunbox.africa/",
+    image: salesunboxSite,
   },
   {
     name: "RadCare site",
@@ -358,6 +382,7 @@ export const alsoBuilt = [
     year: "2025",
     stack: "React · Chart.js · Web3",
     href: "https://magent-fe.vercel.app/",
+    image: magent,
   },
   {
     name: "Radnon Media",
@@ -365,6 +390,7 @@ export const alsoBuilt = [
     year: "2025",
     stack: "Next.js · CMS",
     href: "https://www.radnonmedia.com/",
+    image: radnon,
   },
 ];
 
@@ -438,6 +464,74 @@ export const principles = [
   },
 ];
 
+/* ── AI at work ───────────────────────────────────────────── */
+/*  How AI actually fits into the day, written so an engineering
+    lead can test it in an interview. ⚠ VERIFY every line — swap
+    in the tools you really use and the examples you can talk
+    through. "Where I don't use it" is the part that earns trust;
+    keep it even if you rewrite everything else.                 */
+
+export const aiIntro =
+  "I use AI the way I'd use a fast, well-read junior: great at the first draft, never the last word. It's in my editor every day, and it has made me quicker at the parts of the job that were never the hard parts.";
+
+/** Stages of a typical feature, and who does what at each one. */
+export const aiWorkflow = [
+  {
+    step: "Understand",
+    me: "Read the ticket, the design and the real API response",
+    ai: "Explains unfamiliar code and summarises long payloads",
+  },
+  {
+    step: "Plan",
+    me: "Decide the state model and the edge cases",
+    ai: "Lists unhappy paths I might have missed",
+  },
+  {
+    step: "Draft",
+    me: "Write the logic that carries risk",
+    ai: "Scaffolds types, Zod schemas, forms and tests",
+  },
+  {
+    step: "Review",
+    me: "Read every generated line as if it were a PR",
+    ai: "Second pass on the diff for bugs and naming",
+  },
+  {
+    step: "Ship",
+    me: "Test on a real phone, on a slow network",
+    ai: "Drafts the PR description and changelog",
+  },
+];
+
+export const aiPractices = [
+  {
+    title: "Reading before writing",
+    body: "Dropped into an unfamiliar codebase or a 400-line API response, I ask AI to map it first — which module owns what, which fields are actually used. Then I check its answer against the real code, because a confident summary of the wrong file is worse than none.", // ⚠ VERIFY
+  },
+  {
+    title: "Scaffolding the boring parts",
+    body: "TypeScript types from a sample response, Zod schemas, form boilerplate, the first draft of a test file. Work that's tedious but easy to check is exactly where AI saves me hours a week.", // ⚠ VERIFY
+  },
+  {
+    title: "A reviewer that never gets tired",
+    body: "Before I open a PR I run the diff past AI and ask what breaks: the double submit, the expired token, the empty list. It doesn't replace a human review — it means the human review is spent on design, not typos.", // ⚠ VERIFY
+  },
+  {
+    title: "Building with it, not just around it",
+    body: "On Magent I built interfaces over model output — streaming text, partial results, answers that arrive wrong. Using AI daily makes me better at designing for it: I know where it fails because I watch it fail.", // ⚠ VERIFY
+  },
+];
+
+/** The lines I don't cross. */
+export const aiRules = [
+  "I never ship code I can't explain line by line.",
+  "Auth, permissions and payment checks are written by hand and reviewed by people.",
+  "Client data, keys and credentials never go into a prompt.",
+  "If AI wrote the test and the code, a human checks the test.",
+];
+
+export const aiTools = ["Claude", "ChatGPT", "GitHub Copilot", "Cursor", "v0"]; // ⚠ VERIFY: list only what you use
+
 /* ── Toolkit ──────────────────────────────────────────────── */
 /*  Grouped and honest. "Comfortable" vs "worked with" is a
     signal of self-awareness that senior reviewers pick up on.  */
@@ -499,6 +593,7 @@ export const nav = [
   { label: "Story", href: "#story" },
   { label: "Work", href: "#work" },
   { label: "Craft", href: "#craft" },
+  { label: "AI", href: "#ai" },
   { label: "Next", href: "#direction" },
   { label: "Contact", href: "#contact" },
 ];
